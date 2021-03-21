@@ -22,7 +22,7 @@
 		</div>
 
 		
-	<button @click="addPerson()">Submit</button>
+	<button class="cursor-pointer ml-4 p-1 rounded text-white bg-blue-600" @click="addPerson">Submit</button>
   </div>
 </template>
 
@@ -55,6 +55,7 @@ export default {
 		},
 		addPerson(){
 			eventbus.$emit('add-person',this.newPerson)
+			this.$router.push('/');
 		},
 	}
 }

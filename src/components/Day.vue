@@ -1,14 +1,17 @@
 <template>
 	<div>
 		<p class="text-center" v-text="day.dayName"></p>
-		<div class="flex">
-			<!-- <div>
-				<div v-for="index in people[0].availability.length" :key="index" class="p-1">1</div>
-			</div> -->
+		<div class="flex chart-width overflow-x-scroll">
 			<PersonColumn v-for="(person, index) in day.people" :key="person.id" :person="person" :firstPerson="index === 0" ></PersonColumn>
 		</div>
 	</div>
 </template>
+
+<style scoped>
+.chart-width {
+	width: 100vw;
+}
+</style>
 
 <script>
 import PersonColumn from "./PersonColumn"

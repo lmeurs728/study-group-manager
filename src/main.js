@@ -46,6 +46,7 @@ methods: {
 			name: newPerson.name,
 			phone: newPerson.phone,
 			email: newPerson.email,
+			avatar: sampleData[Math.floor(Math.random() *  20)].avatar
 		}
 
 		for (let i = 0; i < 7; i++) {

@@ -2,7 +2,7 @@
 	<div class="flex flex-col items-end">
 		<img class="avatar-size cursor-pointer" :src="person.avatar" :alt="person.name[0]" @click.prevent="$router.push({name: 'About', params: {person}})"/>
 		<div v-for="(hour, index) in person.availability" :key="_uid + index" class="flex">
-			<p v-if="firstPerson" v-text="getMomentTime(index)" class = "w-20 text-center"></p>
+			<p v-if="firstPerson" v-text="getMomentTime(index)" class = "w-20 text-center sticky top-0 sm:block bg-white"></p>
 			<div  :class="[getDayColor(hour), 'p-4 w-2 border']"></div>
 		</div>
 	</div>
