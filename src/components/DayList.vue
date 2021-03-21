@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="flex flex-wrap justify-around">
 		<template v-for="(day, index) in week">
 			<Day :day="day" :key="_uid + index"></Day>
 		</template>
