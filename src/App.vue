@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="flex-grow">
 	<div class="py-2 flex justify-between px-4 bg-navy text-white">
 		<router-link to="/">Home</router-link>
 		<div>
