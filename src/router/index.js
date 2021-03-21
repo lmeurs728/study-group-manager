@@ -11,9 +11,9 @@ const routes = [
 		component: Home
 	},
 	{
-		path: '/findGroups',
-		name: 'FindGroups',
-		component: () => import('../views/FindGroups.vue')
+		path: '/inputData',
+		name: 'InputData',
+		component: () => import('../views/InputData.vue')
 	},
 	{
 		path: '/about',
