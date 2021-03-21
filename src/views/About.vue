@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div v-if="person" class="flex items-center p-4 m-4 border">
-		<img class="big-avatar-size" alt="" :src="person.avatar"/>
-		<div>
+    <div v-if="person" class="flex flex-col sm:flex-row items-center p-4 m-4 border-2">
+		<img class="big-avatar-size border-2" alt="" :src="person.avatar"/>
+		<div class="text-center ml-2">
 			<p v-text="person.name"></p>
 			<p v-text="person.phone"></p>
 			<p v-text="person.email"></p>

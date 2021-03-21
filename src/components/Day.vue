@@ -8,7 +8,7 @@
 					<p v-text="getMomentTime(index)" class = "w-20 pt-2.5 text-center sm:block bg-white"></p>
 				</div>
 			</div>
-			<div class="flex overflow-x-scroll">
+			<div class="flex overflow-x-auto">
 				<PersonColumn v-for="(person, index) in day.people" :key="person.id" :person="person" :firstPerson="index === 0" ></PersonColumn>
 			</div>
 		</div>
