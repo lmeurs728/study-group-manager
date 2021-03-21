@@ -1,28 +1,26 @@
 <template>
-  <div class="about">
-    <h1>This is a find groups page</h1>
-
+  <div class="m-4">
 		<div class="flex mb-2">
-			<label for="fname" class="pl-2 w-32 block">Name:</label>
-			<input class="border ml-2 px-2 py-1" type="text" id="fname" name="fname"><br>
+			<label for="name" class="pl-2 w-32 block">Name:</label>
+			<input class="border ml-2 px-2 py-1" type="text" id="name" name="name" v-model="newPerson.name"><br>
 		</div>
 
 		<div class="flex mb-2">
-			<label for="fname" class="pl-2 w-32 block">Phone Number:</label>
-			<input class="border ml-2 px-2 py-1" type="text" id="fname" name="fname"><br>
+			<label for="phone" class="pl-2 w-32 block">Phone Number:</label>
+			<input class="border ml-2 px-2 py-1" type="text" id="phone" name="phone" v-model="newPerson.phone"><br>
 		</div>
 
 		<div class="flex mb-2">
-			<label for="fname" class="pl-2 w-32 block">Email:</label>
-			<input class="border ml-2 px-2 py-1" type="text" id="fname" name="fname"><br>
+			<label for="email" class="pl-2 w-32 block">Email:</label>
+			<input class="border ml-2 px-2 py-1" type="text" id="email" name="email" v-model="newPerson.email"><br>
 		</div>
 
-		<div class="sm:flex">
+		<div class="sm:flex ml-2">
 			<InputDay v-for="day in newPerson.availability" :key="day.day" :day="day"></InputDay>
 		</div>
 
 		
-	<button class="cursor-pointer ml-4 p-1 rounded text-white bg-blue-600" @click="addPerson">Submit</button>
+	<button class="cursor-pointer ml-4 p-2 rounded text-white bg-blue-600 mt-4" @click="addPerson">Submit</button>
   </div>
 </template>
 
@@ -35,12 +33,12 @@ export default {
 	},
 	data: function() {
 		return {
-			newPerson: {
-				name:'',
-				phone:'',
-				email:'',
+			newPerson: this.$route.params.personID ? this.getExistingPerson() : {
+				name:' ',
+				phone:' ',
+				email:' ',
 				availability: this.makeEmptyAvailabilityArray()
-			}
+			},
 		}
 	},
 	methods: {
@@ -57,6 +55,12 @@ export default {
 			eventbus.$emit('add-person',this.newPerson)
 			this.$router.push('/');
 		},
+		getExistingPerson(){
+			let weekData = this.$root.$data.weekData
+			let existingPerson = weekData[0].people.find(person => person.id === this.$route.params.personID)
+			existingPerson.availability = JSON.parse(JSON.stringify(weekData.map((day,index) => ({day: index, hours: weekData[index].people.find(person => person.id === this.$route.params.personID).availability}))))
+			return existingPerson;
+		}
 	}
 }
 </script>

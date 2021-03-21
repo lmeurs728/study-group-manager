@@ -12,6 +12,14 @@
 	width: 32px;
 	height: 32px;
 }
+
+.bg-navy {
+	background-color:#002E5D;
+}
+
+.bg-royal {
+	background-color:#0062B8;
+}
 </style>
 
 <script>
@@ -28,10 +36,10 @@ export default {
 	methods: {
 		getDayColor(hour) {
 			return hour === 2 
-				? "bg-blue-600" 
+				? "bg-navy" 
 				: hour === 1 
-					? "bg-yellow-400"
-					: "bg-white"
+					? "bg-royal"
+					: "bg-white";
 		}
 	}
 }

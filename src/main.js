@@ -41,12 +41,20 @@ data: function(){
 },
 methods: {
 	addPerson(newPerson) {
+		const newPersonAvailability = JSON.parse(JSON.stringify(newPerson.availability));
+		if (newPerson.id) {
+			for (let i = 0; i < 7; i++) {
+				this.weekData[i].people.find(person => person.id === newPerson.id).availability = newPersonAvailability[i].hours;
+			}
+			return;
+		}
+
 		var perObject = {
-			id: this.weekData[0].people[this.weekData[0].people.length - 1].id + 1,
+			id: this.weekData[0].people[this.weekData[0].people.length - 1]?.id + 1 || 1,
 			name: newPerson.name,
 			phone: newPerson.phone,
 			email: newPerson.email,
-			avatar: sampleData[Math.floor(Math.random() *  20)].avatar
+			avatar: sampleData[Math.floor(Math.random() *  20)]?.avatar || sampleData[0].avatar
 		}
 
 		for (let i = 0; i < 7; i++) {

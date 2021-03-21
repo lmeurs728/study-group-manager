@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<p class="text-center font-bold mt-4" v-text="day.dayName"></p>
-		<div class="flex chart-width">
+		<div class="flex chart-width sm:w-auto">
 			<div>
 				<br>
 				<div v-for="index in 13" :key="_uid + index">
@@ -17,8 +17,10 @@
 </template>
 
 <style scoped>
-.chart-width {
-	width: 100vw;
+@media (max-width: 640px) {
+	.chart-width {
+		width: 100vw;
+	}
 }
 </style>
 
