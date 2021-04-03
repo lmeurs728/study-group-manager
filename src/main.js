@@ -29,14 +29,32 @@ function generateWeek() {
 	}
 	return toRet;
 }
+
+function injectAvailabilityToBots() {
+	sampleData.forEach((bot, i, bots) => {
+		bots[i].availability = {};
+		for (var day = 0; day < 7; day++) {
+			var dailyAvailability = [];
+			for (var hour = 0; hour < 13; hour++) {
+				dailyAvailability.push(Math.floor(Math.random() *  3));
+			}
+			bots[i].availability[moment.weekdays(day)] = dailyAvailability;
+		}
+	})
+
+	return sampleData;
+}
   
 const weekData = generateWeek();
+
+const people = injectAvailabilityToBots();
 
 new Vue({
 router,
 data: function(){
 	return {
-		weekData
+		weekData,
+		people,
 	}
 },
 methods: {
