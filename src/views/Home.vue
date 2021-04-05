@@ -1,5 +1,5 @@
 <template>
-	<div v-if="weekData[0].people[0]">
+	<div v-if="people[0]">
 		<div class="flex justify-between sm:justify-start items-center mt-2 px-10">
 			<div class='flex items-center'>
 				<div :class="['ml-2 p-4 w-2 border']"></div>
@@ -17,7 +17,7 @@
 			</div>
 		</div>
 		<div class="flex justify-center">
-			<DayList :week="weekData"></DayList>
+			<DayList :week="people"></DayList>
 		</div>
 	</div>
 	<div class="m-2" v-else>
@@ -45,7 +45,7 @@ export default {
 	},
 	data: function() {
 		return {
-			weekData: this.$root.$data.weekData,
+			people: this.$root.$data.people,
 		}
 	},
 }

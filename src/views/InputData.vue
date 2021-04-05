@@ -16,7 +16,7 @@
 		</div>
 
 		<div class="sm:flex ml-2">
-			<InputDay v-for="day in newPerson.availability" :key="day.day" :day="day"></InputDay>
+			<InputDay v-for="(availability, key) in newPerson.availability" :key="key" :day="availability" :dayName="key"></InputDay>
 		</div>
 
 		
@@ -26,7 +26,8 @@
 
 <script>
 import InputDay from "../components/input/InputDay"
-import eventbus from "../eventbus.js"
+import sampleData from "../sampleData.json"
+import moment from "moment"
 export default {
 	components: {
 		InputDay,
@@ -34,32 +35,31 @@ export default {
 	data: function() {
 		return {
 			newPerson: this.$route.params.personID ? this.getExistingPerson() : {
-				name:' ',
-				phone:' ',
-				email:' ',
-				availability: this.makeEmptyAvailabilityArray()
+				id: this.$root.$data.people[this.$root.$data.people.length - 1]?.id + 1 || 1,
+				name: '',
+				phone: '',
+				email: '',
+				avatar: sampleData[Math.floor(Math.random() *  20)]?.avatar || sampleData[0].avatar,
+				availability: this.makeEmptyAvailabilityObject()
 			},
 		}
 	},
 	methods: {
-		makeEmptyAvailabilityArray() {
-			let toRet = [];
+		makeEmptyAvailabilityObject() {
+			let dayObj = {};
 			for (let day = 0; day < 7; day++) {
-				let dayObj = {day}
-				dayObj.hours = new Array(13).fill(0);
-				toRet.push(dayObj);
+				dayObj[moment.weekdays(day)] = new Array(13).fill(0);
 			}
-			return toRet;
+			return dayObj;
 		},
-		addPerson(){
-			eventbus.$emit('add-person',this.newPerson)
+		addPerson() {
+			if (!this.$route.params.personID) {
+				this.$root.$data.people.push(this.newPerson)
+			}
 			this.$router.push('/');
 		},
 		getExistingPerson(){
-			let weekData = this.$root.$data.weekData
-			let existingPerson = weekData[0].people.find(person => person.id === this.$route.params.personID)
-			existingPerson.availability = JSON.parse(JSON.stringify(weekData.map((day,index) => ({day: index, hours: weekData[index].people.find(person => person.id === this.$route.params.personID).availability}))))
-			return existingPerson;
+			return this.$root.$data.people.find(person => person.id === this.$route.params.personID)
 		}
 	}
 }

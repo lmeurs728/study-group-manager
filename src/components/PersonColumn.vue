@@ -1,7 +1,7 @@
 <template>
 	<div class="flex flex-col items-end">
-		<img class="avatar-size cursor-pointer" :src="person.avatar" :alt="person.name[0]" @click.prevent="$router.push({name: 'About', params: {id: person.id}})"/>
-		<div v-for="(hour, index) in person" :key="_uid + index" class="flex">
+		<img class="avatar-size cursor-pointer" :src="person.avatar" alt="avatar" @click.prevent="$router.push({name: 'About', params: {id: person.id}})"/>
+		<div v-for="(hour, index) in person.availability" :key="_uid + index" class="flex">
 			<div :class="[getDayColor(hour), 'p-4 w-2 border']"></div>
 		</div>
 	</div>
@@ -30,7 +30,7 @@ export default {
 	},
 	data: function() {
 		return {
-			showTooltip: false
+			showTooltip: false,
 		}
 	},
 	methods: {

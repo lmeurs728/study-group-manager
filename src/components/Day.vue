@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<p class="text-center font-bold mt-4" v-text="day.dayName"></p>
+		<p class="text-center font-bold mt-4" v-text="moment.weekdays(dayIndex)"></p>
 		<div class="flex chart-width sm:w-auto">
 			<div>
 				<br>
@@ -9,11 +9,7 @@
 				</div>
 			</div>
 			<div class="flex overflow-x-auto">
-				<div v-for="(value, key) in people" :key="key">
-					person {{value}}
-					key {{key}}
-				</div>
-				<PersonColumn v-for="(value, key) in people" :key="key" :person="value" :firstPerson="index === 0" ></PersonColumn>
+				<PersonColumn v-for="(person, index) in people" :key="index" :person="person" :firstPerson="index === 0" ></PersonColumn>
 			</div>
 		</div>
 		
@@ -30,16 +26,17 @@
 
 <script>
 import moment from "moment"
-// import PersonColumn from "./PersonColumn"
+import PersonColumn from "./PersonColumn"
 export default {
 	components: {
-		// PersonColumn
+		PersonColumn
 	},
 	props: {
-		day: Object // name, list of hours, people
+		dayIndex: Number
 	},
 	data: () => ({
-		people: {}
+		people: [],
+		moment,
 	}),
 	methods: {
 		getMomentTime(index) {
@@ -48,7 +45,7 @@ export default {
 		},
 		getPersonData() {
 			this.$root.$data.people.forEach(person => {
-				this.people[person.id] = person.availability[this.day.dayName]
+				this.people.push({id: person.id, availability: person.availability[moment.weekdays(this.dayIndex)], avatar: person.avatar})
 			})
 		}
 	},
