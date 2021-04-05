@@ -9,7 +9,11 @@
 				</div>
 			</div>
 			<div class="flex overflow-x-auto">
-				<PersonColumn v-for="(person, index) in day.people" :key="person.id" :person="person" :firstPerson="index === 0" ></PersonColumn>
+				<div v-for="(value, key) in people" :key="key">
+					person {{value}}
+					key {{key}}
+				</div>
+				<PersonColumn v-for="(value, key) in people" :key="key" :person="value" :firstPerson="index === 0" ></PersonColumn>
 			</div>
 		</div>
 		
@@ -26,19 +30,30 @@
 
 <script>
 import moment from "moment"
-import PersonColumn from "./PersonColumn"
+// import PersonColumn from "./PersonColumn"
 export default {
 	components: {
-		PersonColumn
+		// PersonColumn
 	},
 	props: {
 		day: Object // name, list of hours, people
 	},
+	data: () => ({
+		people: {}
+	}),
 	methods: {
 		getMomentTime(index) {
 			index += 8;
 			return moment(index, 'HH').format('hh:mm a')
+		},
+		getPersonData() {
+			this.$root.$data.people.forEach(person => {
+				this.people[person.id] = person.availability[this.day.dayName]
+			})
 		}
+	},
+	mounted() {
+		this.getPersonData();
 	}
 }
 </script>

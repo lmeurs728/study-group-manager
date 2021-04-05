@@ -36,7 +36,7 @@
 export default {
 	data: function() {
 		return {
-			person: this.$route.params.person,
+			person: this.$root.$data.people.find(person => person.id === this.$route.params.id),
 			weekData: this.$root.$data.weekData,
 		}
 	},
