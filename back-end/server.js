@@ -1,7 +1,6 @@
 /*
 Back-End: Server.js
 ToDo:
-	-Do we want to use our own id? Or do we want to use _id from mongo?
 	-Define Data structure for personScheme
 	-Full_name or name?
 	-import axios
@@ -38,7 +37,6 @@ mongoose.connect('mongodb://localhost:27017/study-group', {
 
 //Scheme for people
 const personSchema = new mongoose.Schema({
-	id: String, //Do we want to just use mongo db _id?
 	name: String,
 	phone: String,
 	email: String,

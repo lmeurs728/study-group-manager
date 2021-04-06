@@ -30,5 +30,6 @@ data: function(){
 		people,
 	}
 },
+
 render: h => h(App)
 }).$mount('#app')
