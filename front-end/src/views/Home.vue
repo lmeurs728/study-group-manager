@@ -44,6 +44,7 @@ export default {
 		DayList
 	},
 	data: function() {
+		//Todo: Get call for people
 		return {
 			people: this.$root.$data.people,
 		}

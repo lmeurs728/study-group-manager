@@ -45,6 +45,7 @@ export default {
 		}
 	},
 	methods: {
+		//Good
 		makeEmptyAvailabilityObject() {
 			let dayObj = {};
 			for (let day = 0; day < 7; day++) {
@@ -52,12 +53,15 @@ export default {
 			}
 			return dayObj;
 		},
+		//Todo: If this function is also changing peoples original data, then Change to app.put '/api/people/:id'.
+		//If it is adding a new person, might be alil different. 
 		addPerson() {
 			if (!this.$route.params.personID) {
 				this.$root.$data.people.push(this.newPerson)
 			}
 			this.$router.push('/');
 		},
+		//Todo: Change function to get specific id -> create new get function In server.js
 		getExistingPerson(){
 			return this.$root.$data.people.find(person => person.id === this.$route.params.personID)
 		}

@@ -35,12 +35,15 @@
 <script>
 export default {
 	data: function() {
+		//Todo: Should call get get people to load all people. 
+		//Todo: Should call get person specific id for display person. 
 		return {
 			displayPerson: this.$root.$data.people.find(person => person.id === this.$route.params.id),
 			people: this.$root.$data.people
 		}
 	},
 	methods: {
+		//Todo: Call delete endpoint
 		deletePerson(id) {
 			const indexToDelete = this.$root.$data.people.findIndex(person => person.id === id);
 			this.$root.$data.people.splice(indexToDelete, 1);

@@ -43,6 +43,7 @@ export default {
 			index += 8;
 			return moment(index, 'HH').format('hh:mm a')
 		},
+		//Todo: Get all from server.js
 		getPersonData() {
 			this.$root.$data.people.forEach(person => {
 				this.people.push({id: person.id, availability: person.availability[moment.weekdays(this.dayIndex)], avatar: person.avatar})
