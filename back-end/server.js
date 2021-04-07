@@ -42,31 +42,18 @@ const personSchema = new mongoose.Schema({
 	email: String,
 	avatar: String,
 	availability: {
+		Sunday: Array,
 		Monday: Array,
 		Tuesday: Array,
 		Wednesday: Array,
 		Thursday: Array,
 		Friday: Array,
 		Saturday: Array,
-		Sunday: Array,
 	}
   });
   
 // New personScheme for people in db
 const Person = mongoose.model('Person', personSchema);
-
-
-// Save image and return "avatar : {path}"
-app.post('/api/photos', upload.single('photo'), async (req, res) => {
-	// Just a safety check
-	if (!req.file) {
-	  return res.sendStatus(400);
-	}
-	res.send({
-	  avatar: "/images/" + req.file.filename
-	});
-  });
-
 
 // Create Person
 app.post('/api/people', async (req, res) => {
@@ -74,6 +61,7 @@ app.post('/api/people', async (req, res) => {
 		name: req.body.name,
 		phone: req.body.phone,
 		email: req.body.email,
+		avatar: req.body.avatar,
 		availability: req.body.availability,
 	});
 	try {
@@ -95,15 +83,6 @@ app.get('/api/people', async (req, res) => {
 	} catch (error) {
 	  console.log(error);
 	  res.sendStatus(500);
-	}
-  });
-
-app.get('/api/people/test', async (req, res) => {
-	try {
-		console.log("It worked");
-	} catch (error) {
-	  	console.log(error);
-	  	res.sendStatus(500);
 	}
   });
 
@@ -143,8 +122,6 @@ app.get('/api/people/:id', async (req, res) => {
 		_id: req.params.id
 	});
 
-	person.title = req.body.title || person.title
-	person.description = req.body.description || person.description
 	person.name = req.body.name || person.name;
 	person.phone = req.body.phone || person.phone;
 	person.email = req.body.email || person.email;
@@ -152,6 +129,97 @@ app.get('/api/people/:id', async (req, res) => {
 	person.availability = req.body.availability || person.availability;
 
 	  await person.save();
+	  res.sendStatus(200);
+	} catch (error) {
+	  console.log(error);
+	  res.sendStatus(500);
+	}
+  });
+
+
+/////////////////////////////////////////////  Classes  /////////////////////////////////////////////////////////////////
+
+  //Scheme for classes
+const classSchema = new mongoose.Schema({
+	title: String,
+	professor: String,
+	students: Array,
+  });
+  
+// New classSchema for classes in db
+const Class = mongoose.model('Class', classSchema);
+
+// Create Classes
+app.post('/api/classes', async (req, res) => {
+	const _class = new Class({
+		title: req.body.title,
+		professor: req.body.professor,
+		students: req.body.students
+	});
+	try {
+	  await _class.save();
+	  res.send(_class);
+	} catch (error) {
+	  console.log(error);
+	  res.sendStatus(500);
+	}
+  });
+
+
+
+// Get All Classes
+app.get('/api/classes', async (req, res) => {
+	try {
+	  let _class = await Class.find();
+	  res.send(_class);
+	} catch (error) {
+	  console.log(error);
+	  res.sendStatus(500);
+	}
+  });
+
+
+// Get Specific Class
+app.get('/api/classes/:id', async (req, res) => {
+	try {
+	  let _class = await Class.findOne({
+		_id: req.params.id
+	});
+	  res.send(_class);
+	} catch (error) {
+	  console.log(error);
+	  res.sendStatus(500);
+	}
+  });
+
+
+
+//Delete Specific Class
+  app.delete('/api/classes/:id', async (req, res) => {
+	try {
+	  await Class.deleteOne({
+		_id: req.params.id
+	  });
+	  res.sendStatus(200);
+	} catch (error) {
+	  console.log(error);
+	  res.sendStatus(500);
+	}
+  });
+
+
+//Edit Specific Class
+  app.put('/api/classes/:id', async (req, res) => {
+	try {
+	let _class = await Class.findOne({
+		_id: req.params.id
+	});
+
+	_class.title = req.body.title || _class.title
+	_class.professor = req.body.professor || _class.professor
+	_class.students = req.body.students || _class.students
+
+	  await _class.save();
 	  res.sendStatus(200);
 	} catch (error) {
 	  console.log(error);

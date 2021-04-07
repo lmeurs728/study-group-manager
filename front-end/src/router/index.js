@@ -11,6 +11,11 @@ const routes = [
 		component: Home
 	},
 	{
+		path: '/addClass',
+		name: 'AddClass',
+		component: () => import('../views/AddClass.vue')
+	},
+	{
 		path: '/inputData',
 		name: 'InputData',
 		component: () => import('../views/InputData.vue')
@@ -19,7 +24,7 @@ const routes = [
 		path: '/about',
 		name: 'About',
 		component: () => import('../views/About.vue')
-	}
+	},
 
 ]
 

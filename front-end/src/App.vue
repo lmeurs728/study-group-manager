@@ -1,9 +1,10 @@
 <template>
 <div class="flex-grow">
-	<div class="py-2 flex justify-between px-4 bg-navy text-white">
+	<div class="py-2 sm:flex justify-between px-4 bg-navy text-white">
 		<router-link to="/">Home</router-link>
 		<div>
-			<router-link to="/inputData">Join Group</router-link> |
+			<router-link to="/addClass">Add Class</router-link> |
+			<router-link to="/inputData">Set Availability</router-link> |
 			<router-link to="/about">About</router-link>
 		</div>
 	</div>
@@ -12,11 +13,6 @@
 </template>
 
 <style scoped>
-.avatar-size {
-	width: 32px;
-	height: 32px;
-}
-
 .bg-navy {
 	background-color:#002E5D;
 }

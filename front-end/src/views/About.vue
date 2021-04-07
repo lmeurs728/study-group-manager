@@ -9,14 +9,14 @@
 		</div>
 	</div>
 	<template v-else>
-		<div v-for="person in people" :key="person._id" class="flex items-center cursor-pointer" @click="displayPerson = person">
+		<div v-for="person in people" :key="person.id" class="flex items-center cursor-pointer" @click="displayPerson = person">
 			<img class="avatar-size" :src="person.avatar" alt="">
 			<p v-text="person.name"></p>
 		</div>
 	</template>
-	<button class="cursor-pointer ml-4 p-2 rounded text-white bg-blue-600" v-if="displayPerson" @click="displayPerson = null">See Class</button>
+	<button class="cursor-pointer ml-4 p-2 rounded text-white bg-blue-600" v-if="displayPerson" @click="displayPerson = null">See All Students</button>
 	<button class="cursor-pointer ml-4 p-2 rounded text-white bg-blue-600" v-if="displayPerson" @click.prevent="$router.push({name: 'InputData', params: {personID:displayPerson._id}})">Edit Availability</button>
-	<button class="cursor-pointer ml-4 p-2 rounded text-white bg-blue-600" v-if="displayPerson" @click.prevent="deletePerson(displayPerson._id)">Delete Person</button>
+	<button class="cursor-pointer ml-4 p-2 rounded text-white bg-red-600" v-if="displayPerson" @click.prevent="deletePerson(displayPerson._id)">Delete Person</button>
 </div>
 
 </template>
@@ -44,7 +44,7 @@ data: function() {
 methods: {
 	//Todo: Call delete endpoint
 	// deletePerson(id) {
-	// 	const indexToDelete = this.$root.$data.people.findIndex(person => person._id === id);
+	// 	const indexToDelete = this.$root.$data.people.findIndex(person => person.id === id);
 	// 	this.$root.$data.people.splice(indexToDelete, 1);
 	// },
 	async deletePerson(id) {
@@ -57,6 +57,10 @@ methods: {
 			console.log(error);
 		}
 	},
+},
+created() {
+	this.$root.getPeople();
+	this.$root.getClasses();
 }
 }
 

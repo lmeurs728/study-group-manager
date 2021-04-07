@@ -9,7 +9,7 @@
 				</div>
 			</div>
 			<div class="flex overflow-x-auto">
-				<PersonColumn v-for="(person, index) in people" :key="index" :person="person" :firstPerson="index === 0" ></PersonColumn>
+				<PersonColumn v-for="(person, index) in students" :key="index" :person="person" :firstPerson="index === 0" ></PersonColumn>
 			</div>
 		</div>
 		
@@ -32,10 +32,11 @@ export default {
 		PersonColumn
 	},
 	props: {
-		dayIndex: Number
+		dayIndex: Number,
+		people: Array,
 	},
 	data: () => ({
-		people: [],
+		students: [],
 		moment,
 	}),
 	methods: {
@@ -45,13 +46,22 @@ export default {
 		},
 		//Todo: Get all from server.js
 		getPersonData() {
-			this.$root.$data.people.forEach(person => {
-				this.people.push({id: person._id, availability: person.availability[moment.weekdays(this.dayIndex)], avatar: person.avatar})
+			this.students = [];
+			this.people.forEach(person => {
+				var myPerson = this.$root.$data.people.find(man => man._id === person);
+				if (myPerson) {
+					this.students.push({id: person, availability: myPerson.availability[moment.weekdays(this.dayIndex)], avatar: myPerson.avatar})
+				}
 			})
 		}
 	},
 	mounted() {
 		this.getPersonData();
+	},
+	watch: {
+		"people"() {
+			this.getPersonData();
+		}
 	}
 }
 </script>

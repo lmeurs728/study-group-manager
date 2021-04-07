@@ -28,6 +28,7 @@ new Vue({
 router,
 data: function(){
 	return {
+		classes: [],
 		people: [],
 	}
 },
@@ -36,6 +37,15 @@ methods:{
 		try {
 			let response = await axios.get("/api/people");
 			this.people = response.data;
+			return true;
+		} catch (error) {
+			console.log(error);
+		}
+	},
+	async getClasses() {
+		try {
+			let response = await axios.get("/api/classes");
+			this.classes = response.data;
 			return true;
 		} catch (error) {
 			console.log(error);

@@ -35,13 +35,18 @@ export default {
 	},
 	data: function() {
 		return {
-			newPerson: this.$route.params.personID ? this.getExistingPerson() : {
+			newPerson: {
 				name: '',
 				phone: '',
 				email: '',
 				avatar: sampleData[Math.floor(Math.random() *  20)]?.avatar || sampleData[0].avatar,
 				availability: this.makeEmptyAvailabilityObject()
 			},
+		}
+	},
+	mounted: function() {
+		if (this.$route.params.personID) {
+			this.getExistingPerson();
 		}
 	},
 	methods: {
@@ -63,7 +68,8 @@ export default {
 		//Todo: Change function to get specific id -> create new get function In server.js
 
 		async getExistingPerson(){
-			return await axios.get("/api/people/" + this.$route.params.personID)
+			const response = await axios.get("/api/people/" + this.$route.params.personID)
+			this.newPerson = response.data;
 			// return this.$root.$data.people.find(person => person.id === this.$route.params.personID)
 		},
 
@@ -73,29 +79,25 @@ export default {
 				// const formData = new FormData();
 				// formData.append('photo', this.file, this.file.name)
 				// let r1 = await axios.post('/api/photos', formData);
-				if(!this.$route.params.personID){
+				if (!this.$route.params.personID) {
 					//Create New
 					await axios.post('/api/people', {
-						title: this.newPerson.title,
-						name: this.newPerson.name,
-						phone: this.newPerson.phone,
-						email: this.newPerson.email,
-						//avatar: this.newPerson.avatar,
-						availability: this.newPerson.availability,
-					// 	avatar: r1.data.path
-					});
-				}
-
-				else{
-					//Update
-					await axios.put("/api/people/" + this.$route.params.personID, {
-						title: this.newPerson.title,
 						name: this.newPerson.name,
 						phone: this.newPerson.phone,
 						email: this.newPerson.email,
 						avatar: this.newPerson.avatar,
 						availability: this.newPerson.availability,
-					// 	avatar: r1.data.path
+					});
+				}
+
+				else {
+					//Update
+					await axios.put("/api/people/" + this.$route.params.personID, {
+						name: this.newPerson.name,
+						phone: this.newPerson.phone,
+						email: this.newPerson.email,
+						avatar: this.newPerson.avatar,
+						availability: this.newPerson.availability,
 					});
 				}
 				this.$root.getPeople();
