@@ -227,10 +227,10 @@ app.get('/api/classes/:id', async (req, res) => {
 	}
   });
 
-app.listen(3000, () => console.log('Server listening on port 3000!'));
+app.listen(3001, () => console.log('Server listening on port 3001!'));
 
 
 
 
-// curl -X POST -d '{"name": "", "phone": "", "email": "", "avatar": "", "availability": {"Monday": "[]", "Tuesday": "[]", "Wednesday": "[]", "Thursday": "[]", "Friday": "[]", "Saturday": "[]", "Sunday": "[]"}}' -H "Content-Type: application/json" localhost:3000/api/study-group
+// curl -X POST -d '{"name": "", "phone": "", "email": "", "avatar": "", "availability": {"Monday": "[]", "Tuesday": "[]", "Wednesday": "[]", "Thursday": "[]", "Friday": "[]", "Saturday": "[]", "Sunday": "[]"}}' -H "Content-Type: application/json" localhost:3001/api/study-group
 
