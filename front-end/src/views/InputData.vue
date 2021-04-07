@@ -20,11 +20,12 @@
 		</div>
 
 		
-	<button class="cursor-pointer ml-4 p-2 rounded text-white bg-blue-600 mt-4" @click="addPerson">Submit</button>
+	<button class="cursor-pointer ml-4 p-2 rounded text-white bg-blue-600 mt-4" @click="upload()">Submit</button>
   </div>
 </template>
 
 <script>
+import axios from "axios"
 import InputDay from "../components/input/InputDay"
 import sampleData from "../sampleData.json"
 import moment from "moment"
@@ -35,7 +36,6 @@ export default {
 	data: function() {
 		return {
 			newPerson: this.$route.params.personID ? this.getExistingPerson() : {
-				id: this.$root.$data.people[this.$root.$data.people.length - 1]?.id + 1 || 1,
 				name: '',
 				phone: '',
 				email: '',
@@ -55,16 +55,57 @@ export default {
 		},
 		//Todo: If this function is also changing peoples original data, then Change to app.put '/api/people/:id'.
 		//If it is adding a new person, might be alil different. 
-		addPerson() {
-			if (!this.$route.params.personID) {
-				this.$root.$data.people.push(this.newPerson)
-			}
-			this.$router.push('/');
-		},
+		// addPerson() {
+		// 	if (!this.$route.params.personID) {
+		// 		this.$root.$data.people.push(this.newPerson)
+		// 	}
+		// },
 		//Todo: Change function to get specific id -> create new get function In server.js
-		getExistingPerson(){
-			return this.$root.$data.people.find(person => person.id === this.$route.params.personID)
-		}
+
+		async getExistingPerson(){
+			return await axios.get("/api/people/" + this.$route.params.personID)
+			// return this.$root.$data.people.find(person => person.id === this.$route.params.personID)
+		},
+
+
+		async upload() {
+			try {
+				// const formData = new FormData();
+				// formData.append('photo', this.file, this.file.name)
+				// let r1 = await axios.post('/api/photos', formData);
+				if(!this.$route.params.personID){
+					//Create New
+					await axios.post('/api/people', {
+						title: this.newPerson.title,
+						name: this.newPerson.name,
+						phone: this.newPerson.phone,
+						email: this.newPerson.email,
+						//avatar: this.newPerson.avatar,
+						availability: this.newPerson.availability,
+					// 	avatar: r1.data.path
+					});
+				}
+
+				else{
+					//Update
+					await axios.put("/api/people/" + this.$route.params.personID, {
+						title: this.newPerson.title,
+						name: this.newPerson.name,
+						phone: this.newPerson.phone,
+						email: this.newPerson.email,
+						avatar: this.newPerson.avatar,
+						availability: this.newPerson.availability,
+					// 	avatar: r1.data.path
+					});
+				}
+				this.$root.getPeople();
+				this.$router.push('/');
+				return true;
+			} catch (error) {
+				console.log(error);
+			}
+		},
+
 	}
 }
 </script>

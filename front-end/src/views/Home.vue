@@ -44,11 +44,18 @@ export default {
 		DayList
 	},
 	data: function() {
-		//Todo: Get call for people
 		return {
 			people: this.$root.$data.people,
 		}
 	},
+	created(){
+		this.$root.getPeople();
+	},
+	watch: {
+		"$root.$data.people"(val){
+			this.people = val
+		}
+	}
 }
 </script>
 

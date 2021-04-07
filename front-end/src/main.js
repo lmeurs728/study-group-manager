@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import axios from 'axios'
 import App from './App.vue'
 import router from './router'
 // import moment from "moment"
@@ -23,16 +24,22 @@ Vue.config.productionTip = false
   
 // const people = injectAvailabilityToBots();
 
-async function getPeople() {
-
-}
-const people = getPeople()
-
 new Vue({
 router,
 data: function(){
 	return {
-		people,
+		people: [],
+	}
+},
+methods:{
+	async getPeople() {
+		try {
+			let response = await axios.get("/api/people");
+			this.people = response.data;
+			return true;
+		} catch (error) {
+			console.log(error);
+		}
 	}
 },
 

@@ -71,11 +71,9 @@ app.post('/api/photos', upload.single('photo'), async (req, res) => {
 // Create Person
 app.post('/api/people', async (req, res) => {
 	const person = new Person({
-		id: req.body.id,
 		name: req.body.name,
 		phone: req.body.phone,
 		email: req.body.email,
-		avatar: req.body.avatar,
 		availability: req.body.availability,
 	});
 	try {
@@ -97,6 +95,15 @@ app.get('/api/people', async (req, res) => {
 	} catch (error) {
 	  console.log(error);
 	  res.sendStatus(500);
+	}
+  });
+
+app.get('/api/people/test', async (req, res) => {
+	try {
+		console.log("It worked");
+	} catch (error) {
+	  	console.log(error);
+	  	res.sendStatus(500);
 	}
   });
 
@@ -136,9 +143,8 @@ app.get('/api/people/:id', async (req, res) => {
 		_id: req.params.id
 	});
 
-	item.title = req.body.title || item.title
-	item.description = req.body.description || item.description
-	person.id = req.body.id || person.id
+	person.title = req.body.title || person.title
+	person.description = req.body.description || person.description
 	person.name = req.body.name || person.name;
 	person.phone = req.body.phone || person.phone;
 	person.email = req.body.email || person.email;
@@ -154,3 +160,9 @@ app.get('/api/people/:id', async (req, res) => {
   });
 
 app.listen(3000, () => console.log('Server listening on port 3000!'));
+
+
+
+
+// curl -X POST -d '{"name": "", "phone": "", "email": "", "avatar": "", "availability": {"Monday": "[]", "Tuesday": "[]", "Wednesday": "[]", "Thursday": "[]", "Friday": "[]", "Saturday": "[]", "Sunday": "[]"}}' -H "Content-Type: application/json" localhost:3000/api/study-group
+
