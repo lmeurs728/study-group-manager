@@ -68,9 +68,6 @@ export default {
 		this.selectedClass = this.$root.$data.classes[0]?._id
 	},
 	watch: {
-		"$root.$data.people"(val){
-			this.people = val;
-		},
 		"$root.$data.classes"(val){
 			this.classes = val;
 			this.people = this.$root.$data.classes[0]?.students || []
