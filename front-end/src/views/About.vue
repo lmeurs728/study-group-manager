@@ -14,9 +14,12 @@
 			<p v-text="person.name"></p>
 		</div>
 	</template>
-	<button class="cursor-pointer ml-4 p-2 rounded text-white bg-blue-600" v-if="displayPerson" @click="displayPerson = null">See All Students</button>
-	<button class="cursor-pointer ml-4 p-2 rounded text-white bg-blue-600" v-if="displayPerson" @click.prevent="$router.push({name: 'InputData', params: {personID:displayPerson._id}})">Edit Availability</button>
-	<button class="cursor-pointer ml-4 p-2 rounded text-white bg-red-600" v-if="displayPerson" @click.prevent="deletePerson(displayPerson._id)">Delete Person</button>
+	<button class="cursor-pointer ml-4 p-2 rounded text-white bg-blue-600" 
+		v-if="displayPerson" @click="displayPerson = null">See All Students</button>
+	<button class="cursor-pointer ml-4 p-2 rounded text-white bg-blue-600" 
+		v-if="personIsUser" @click.prevent="redirectToEdit">Edit Availability</button>
+	<button class="cursor-pointer ml-4 p-2 rounded text-white bg-red-600" 
+		v-if="personIsUser" @click.prevent="deletePerson(displayPerson._id)">Delete Person</button>
 </div>
 
 </template>
@@ -41,6 +44,13 @@ data: function() {
 		people: this.$root.$data.people
 	}
 },
+computed: {
+	personIsUser() {
+		return this.$root.$data.user && this.displayPerson && this.displayPerson._id != '607e19f62a8f8332e049333f'
+		&& ((this.$root.$data.user.role === "admin"  && this.displayPerson.role !== "admin")
+		|| this.displayPerson._id === this.$root.$data.user._id);
+	}
+},
 methods: {
 	//Todo: Call delete endpoint
 	// deletePerson(id) {
@@ -48,7 +58,12 @@ methods: {
 	// 	this.$root.$data.people.splice(indexToDelete, 1);
 	// },
 	async deletePerson(id) {
+		const logout = (this.displayPerson && this.displayPerson._id === this.$root.$data.user._id);
 		try {
+			if (logout) {
+				this.$root.$data.user = null;
+				await axios.delete("/api/people/"); // Logout
+			}
 			await axios.delete("/api/people/" + id);
 			this.$root.getPeople();
 			this.$router.push('/');
@@ -57,6 +72,9 @@ methods: {
 			console.log(error);
 		}
 	},
+	redirectToEdit() {
+		this.$router.push({name: 'InputData', params: {personID: this.displayPerson._id}})
+	}
 },
 created() {
 	this.$root.getPeople();

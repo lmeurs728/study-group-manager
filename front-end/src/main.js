@@ -24,18 +24,21 @@ Vue.config.productionTip = false
   
 // const people = injectAvailabilityToBots();
 
+let user = null;
+
 new Vue({
 router,
 data: function(){
 	return {
 		classes: [],
 		people: [],
+		user,
 	}
 },
 methods:{
 	async getPeople() {
 		try {
-			let response = await axios.get("/api/people");
+			let response = await axios.get("/api/people/find");
 			this.people = response.data;
 			return true;
 		} catch (error) {

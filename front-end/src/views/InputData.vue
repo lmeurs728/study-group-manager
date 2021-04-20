@@ -1,5 +1,17 @@
 <template>
   <div class="m-4">
+		<div v-if="!editing">
+			<div class="flex mb-2">
+				<label for="username" class="pl-2 w-32 block">Username:</label>
+				<input class="border ml-2 px-2 py-1" type="text" id="username" name="username" v-model="newPerson.username"><br>
+			</div>
+
+			<div class="flex mb-2">
+				<label for="password" class="pl-2 w-32 block">Password:</label>
+				<input class="border ml-2 px-2 py-1" type="text" id="password" name="password" v-model="newPerson.password"><br>
+			</div>
+		</div>
+
 		<div class="flex mb-2">
 			<label for="name" class="pl-2 w-32 block">Name:</label>
 			<input class="border ml-2 px-2 py-1" type="text" id="name" name="name" v-model="newPerson.name"><br>
@@ -39,14 +51,18 @@ export default {
 				name: '',
 				phone: '',
 				email: '',
+				username: '',
+				password: '',
 				avatar: sampleData[Math.floor(Math.random() *  20)]?.avatar || sampleData[0].avatar,
 				availability: this.makeEmptyAvailabilityObject()
 			},
+			editing: false,
 		}
 	},
 	mounted: function() {
 		if (this.$route.params.personID) {
 			this.getExistingPerson();
+			this.editing = true;
 		}
 	},
 	methods: {
@@ -58,36 +74,32 @@ export default {
 			}
 			return dayObj;
 		},
-		//Todo: If this function is also changing peoples original data, then Change to app.put '/api/people/:id'.
-		//If it is adding a new person, might be alil different. 
-		// addPerson() {
-		// 	if (!this.$route.params.personID) {
-		// 		this.$root.$data.people.push(this.newPerson)
-		// 	}
-		// },
-		//Todo: Change function to get specific id -> create new get function In server.js
 
 		async getExistingPerson(){
-			const response = await axios.get("/api/people/" + this.$route.params.personID)
-			this.newPerson = response.data;
-			// return this.$root.$data.people.find(person => person.id === this.$route.params.personID)
+			const response = await axios.get("/api/people/find/" + this.$route.params.personID)
+			this.newPerson = response.data.user;
 		},
 
 
 		async upload() {
 			try {
-				// const formData = new FormData();
-				// formData.append('photo', this.file, this.file.name)
-				// let r1 = await axios.post('/api/photos', formData);
 				if (!this.$route.params.personID) {
 					//Create New
-					await axios.post('/api/people', {
+					console.log("User:");
+					let user = await axios.post('/api/people/', {
+						username: this.newPerson.username,
+						password: this.newPerson.password,
 						name: this.newPerson.name,
 						phone: this.newPerson.phone,
 						email: this.newPerson.email,
 						avatar: this.newPerson.avatar,
 						availability: this.newPerson.availability,
 					});
+
+					console.log(user.data);
+					user = user.data.user;
+
+					this.$root.$data.user = user;
 				}
 
 				else {
@@ -101,7 +113,9 @@ export default {
 					});
 				}
 				this.$root.getPeople();
+				console.log("Above");
 				this.$router.push('/');
+				console.log("Below");
 				return true;
 			} catch (error) {
 				console.log(error);

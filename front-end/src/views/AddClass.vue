@@ -1,5 +1,5 @@
 <template>
-<div class="ml-4">
+<div v-if="admin" class="ml-4">
 	<div>Add Class</div>
 	<div class="flex mb-2">
 		<label for="title" class="pl-2 w-32 block">Title:</label>
@@ -18,6 +18,9 @@
 	</div>
 	<button class="cursor-pointer ml-4 p-2 rounded text-white bg-blue-600 mt-4" @click="upload()">Submit</button>
 	<button class="cursor-pointer ml-4 p-2 rounded text-white bg-red-600" v-if="$route.params.classID" @click.prevent="deleteClass(newClass._id)">Delete Class</button>
+</div>
+<div v-else>
+	Dang HAcKer
 </div>
 </template>
 
@@ -40,6 +43,11 @@ export default {
 			},
 			people: this.$root.$data.people,
 			selectedClassID: this.$route.params.classID || ""
+		}
+	},
+	computed:{
+		admin(){
+			return this.$root.$data.user && this.$root.$data.user.role === "admin";
 		}
 	},
 	mounted: function() {
